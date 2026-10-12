@@ -1,9 +1,13 @@
 import styles from "./Header.module.scss";
-import Link from 'next/link';
-import Image from 'next/image';
-import {Button} from '@primer/react-brand';
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Button } from "@primer/react-brand";
 
 export const Header = () => {
+  const router = useRouter();
+  const isTeams = router.pathname === "/teams";
+
   return (
     <>
       <header className={styles.siteHeader} data-color-mode="dark">
@@ -14,8 +18,20 @@ export const Header = () => {
               width={144}
               height={32}
               alt="For Good First Issue logo"
+              style={{ height: "auto" }}
             />
           </Link>
+          <nav className={styles.pageTabs}>
+            <Link href="/" className={`${styles.pageTab} ${!isTeams ? styles.pageTabActive : ""}`}>
+              For Individuals
+            </Link>
+            <Link
+              href="/teams"
+              className={`${styles.pageTab} ${isTeams ? styles.pageTabActive : ""}`}
+            >
+              For Teams
+            </Link>
+          </nav>
           <Button
             variant="primary"
             as="a"

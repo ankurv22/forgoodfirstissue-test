@@ -11,9 +11,9 @@ on:
   # Allows you to trigger this workflow from another workflow
   workflow_call:
   
-  # Cron schedule, everyday at midnight   
+  # Cron schedule, every 6 hours
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: "0 */6 * * *"
 
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -37,7 +37,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -63,14 +63,15 @@ jobs:
         run: npm run build
         env:
           GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          TEAM_REQUESTS_TOKEN: ${{ secrets.TEAM_REQUESTS_TOKEN }}
       - name: Update happycommits.json
         uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a #v4.16.0
         with:
           commit_message: update generated.json [skip actions]
           branch: deploy
-          file_pattern: 'generated.json'
+          file_pattern: "generated.json"
           skip_checkout: true
-          push_options: '--force'
+          push_options: "--force"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3.0.1
         with:
